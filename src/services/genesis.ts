@@ -1,6 +1,6 @@
 import BlueLinky from "bluelinky";
 
-export type VehicleCommand = "start" | "start-winter" | "start-summer" | "start-preset" | "stop" | "lock" | "unlock" | "status";
+export type VehicleCommand = "start" | "start-winter" | "start-summer" | "stop" | "lock" | "unlock" | "status";
 
 export interface CommandResult {
   success: boolean;
@@ -109,17 +109,6 @@ export async function executeCommand(
           seatClimateSettings: { driverSeat: 8, passengerSeat: 8 },
         });
         return { success: true, message: "GV70 started (summer: 65°F, cooled seats)" };
-      }
-      case "start-preset": {
-        await vehicle.start({
-          hvac: true,
-          duration: 10,
-          temperature: 72,
-          defrost: false,
-          heatedFeatures: false,
-          unit: "F",
-        });
-        return { success: true, message: "GV70 started (preset)" };
       }
       case "stop": {
         await vehicle.stop();
