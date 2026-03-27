@@ -28,7 +28,10 @@ POST /api/command
 
 | Command  | What it does                              |
 |----------|-------------------------------------------|
-| `start`  | Remote start with climate control (10 min)|
+| `start`  | Remote start, 72°F, HVAC on (10 min)      |
+| `start-winter` | 80°F, heated seats, defrost on       |
+| `start-summer` | 65°F, ventilated/cooled seats        |
+| `start-preset` | Uses Genesis app's saved climate settings |
 | `stop`   | Turn off engine                           |
 | `lock`   | Lock all doors                            |
 | `unlock` | Unlock all doors                          |

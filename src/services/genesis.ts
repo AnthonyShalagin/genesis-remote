@@ -1,6 +1,6 @@
 import BlueLinky from "bluelinky";
 
-export type VehicleCommand = "start" | "stop" | "lock" | "unlock" | "status";
+export type VehicleCommand = "start" | "start-winter" | "start-summer" | "start-preset" | "stop" | "lock" | "unlock" | "status";
 
 export interface CommandResult {
   success: boolean;
@@ -78,14 +78,48 @@ export async function executeCommand(
     switch (command) {
       case "start": {
         await vehicle.start({
-          hvac: false,
+          hvac: true,
           duration: 10,
           temperature: 72,
           defrost: false,
           heatedFeatures: false,
           unit: "F",
         });
-        return { success: true, message: "GV70 remote start initiated" };
+        return { success: true, message: "GV70 started (72°F)" };
+      }
+      case "start-winter": {
+        await vehicle.start({
+          hvac: true,
+          duration: 10,
+          temperature: 80,
+          defrost: true,
+          heatedFeatures: true,
+          unit: "F",
+        });
+        return { success: true, message: "GV70 started (winter: 80°F, heated seats, defrost)" };
+      }
+      case "start-summer": {
+        await vehicle.start({
+          hvac: true,
+          duration: 10,
+          temperature: 65,
+          defrost: false,
+          heatedFeatures: false,
+          unit: "F",
+          seatClimateSettings: { driverSeat: 8, passengerSeat: 8 },
+        });
+        return { success: true, message: "GV70 started (summer: 65°F, cooled seats)" };
+      }
+      case "start-preset": {
+        await vehicle.start({
+          hvac: true,
+          duration: 10,
+          temperature: 72,
+          defrost: false,
+          heatedFeatures: false,
+          unit: "F",
+        });
+        return { success: true, message: "GV70 started (preset)" };
       }
       case "stop": {
         await vehicle.stop();

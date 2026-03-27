@@ -4,6 +4,9 @@ import { GmailService } from "@/services/gmail";
 
 const VALID_COMMANDS: VehicleCommand[] = [
   "start",
+  "start-winter",
+  "start-summer",
+  "start-preset",
   "stop",
   "lock",
   "unlock",
