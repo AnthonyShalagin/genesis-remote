@@ -93,8 +93,9 @@ export async function executeCommand(
           duration: 10,
           temperature: 80,
           defrost: true,
-          heatedFeatures: true,
+          heatedFeatures: 1,
           unit: "F",
+          seatClimateSettings: { driverSeat: 8, passengerSeat: 8 },
         });
         return { success: true, message: "GV70 started (winter: 80°F, heated seats, defrost)" };
       }
@@ -104,9 +105,9 @@ export async function executeCommand(
           duration: 10,
           temperature: 65,
           defrost: false,
-          heatedFeatures: false,
+          heatedFeatures: 0,
           unit: "F",
-          seatClimateSettings: { driverSeat: 8, passengerSeat: 8 },
+          seatClimateSettings: { driverSeat: 5, passengerSeat: 5 },
         });
         return { success: true, message: "GV70 started (summer: 65°F, cooled seats)" };
       }
