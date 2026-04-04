@@ -12,7 +12,7 @@ A lightweight Next.js API deployed on Vercel that authenticates with Genesis Con
 
 - **iOS Shortcut** — one tap from Home Screen
 - **REST API** — `POST /api/command` with API key auth
-- **Google Home** — via IFTTT webhook (coming soon)
+- **Google Home** — voice commands via IFTTT webhook
 - **SMS fallback** — text commands to Gmail (requires worker process)
 
 ## Sample Output
@@ -61,15 +61,15 @@ POST /api/command
 
 ## Cost
 
-$0/month — Vercel free tier, Genesis Connected Services included with vehicle.
+$0/month — Vercel free tier, IFTTT free tier (up to 3 applets), Genesis Connected Services included with vehicle.
 
 ## Setup
 
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/AnthonyShalagin/genesis-sms.git
-cd genesis-sms
+git clone https://github.com/AnthonyShalagin/genesis-remote.git
+cd genesis-remote
 npm install
 ```
 
@@ -111,6 +111,33 @@ Add environment variables via the Vercel API or dashboard (avoid CLI piping whic
 3. Set URL to `https://your-app.vercel.app/api/command`
 4. Method: POST, add `x-api-key` header, JSON body with `command` and `pin`
 5. Add to Home Screen
+
+### 5. Google Home setup (via IFTTT)
+
+1. Create an [IFTTT](https://ifttt.com) account and connect your Google account
+2. Create a new applet for each command you want:
+   - **If This**: Google Assistant → "Activate scene" (e.g. scene name: `winter car`)
+   - **Then That**: Webhooks → "Make a web request"
+     - URL: `https://your-app.vercel.app/api/command`
+     - Method: POST
+     - Content-Type: `application/json`
+     - Additional Headers: `x-api-key: YOUR_API_KEY`
+     - Body: `{"command":"start-winter","pin":"YOUR_PIN"}`
+3. Repeat for other commands (e.g. `summer car` → `start-summer`, `lock car` → `lock`)
+
+Now say **"Hey Google, activate winter car"** and your GV70 starts with heated seats and defrost.
+
+> **Note:** IFTTT free tier allows up to 3 applets. For more, a paid plan is required.
+
+### 6. SMS worker (optional)
+
+The SMS worker monitors a Gmail inbox for text commands (format: `COMMAND PIN`) and executes them:
+
+```bash
+npm run worker
+```
+
+This requires `GMAIL_ADDRESS`, `GMAIL_APP_PASSWORD`, `SMS_GATEWAY`, and `ALLOWED_SENDER` environment variables. The worker polls for unread messages every 30 seconds.
 
 ## License
 
